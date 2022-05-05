@@ -1,0 +1,25 @@
+server:
+  port: 5000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://127.0.0.1:3306/cet4?userSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT"
+    username: root
+    password: '000000'
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    enabled: true
+    cache: false
+    check-template: true
+    check-template-location: true
+    servlet:
+      content-type: text/html
+# trace < debug < info < warn < error < fatal
+logging:
+  level:
+    root: info
+
+
