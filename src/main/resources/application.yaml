@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://127.0.0.1:3306/cet4?userSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT"
+    url: "jdbc:mysql://127.0.0.1:3310/cet4?userSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT"
     username: root
     password: '000000'
   thymeleaf:
@@ -21,5 +21,12 @@ spring:
 logging:
   level:
     root: info
+#mybatis:
+#  mapper-locations: com.cet4.mapper
+#  type-aliases-package: com.cet4.dao
+# 打印sql
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

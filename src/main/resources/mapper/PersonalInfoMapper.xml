@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cet4.dao.PersonalInfoDao">
+    <!-- SQL语句 -->
+    <insert id="save">
+        INSERT INTO personal_info (USER_ID,REVISION,CREATED_BY,CREATED_TIME,UPDATED_BY,
+                                   UPDATED_TIME,NAME,WRITTEN_SCHOOL,SCHOOL_CAMPUS,IS_LEND_EXAM,
+                                   SCHOOL_REGISTER,GENDER,PAPERS_TYPE,EDUCATION_BACK, SCHOOLING_LENGTH,
+                                   ENROLLMENT_YEAR,GRADE,DEPARTMENT,PROFESSION,CLASS_NAME,STUDENT_NUMBER,REMARK,
+                                   CET4_GRADE_INFO)values
+        <foreach collection="list" item="personalInfoPo" separator=",">
+            (#{personalInfoPo.userId},
+            #{personalInfoPo.revision},
+            #{personalInfoPo.createdBy},
+            #{personalInfoPo.createdTime},
+            #{personalInfoPo.updatedBy},
+            #{personalInfoPo.updatedTime},
+            #{personalInfoPo.name},
+            #{personalInfoPo.writtenSchool},
+            #{personalInfoPo.schoolCampus},
+            #{personalInfoPo.isLendExam},
+            #{personalInfoPo.schoolRegister},
+            #{personalInfoPo.gender},
+            #{personalInfoPo.papersType},
+            #{personalInfoPo.educationBack},
+            #{personalInfoPo.schoolingLength},
+            #{personalInfoPo.enrollmentYear},
+            #{personalInfoPo.grade},
+            #{personalInfoPo.department},
+            #{personalInfoPo.profession},
+            #{personalInfoPo.className},
+            #{personalInfoPo.studentNumber},
+            #{personalInfoPo.remark},
+            #{personalInfoPo.cet4GradeInfo})
+        </foreach>
+    </insert>
+</mapper>

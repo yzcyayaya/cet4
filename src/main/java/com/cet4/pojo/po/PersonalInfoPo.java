@@ -1,10 +1,11 @@
 package com.cet4.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.cet4.pojo.bo.PersonalInfoBo;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName(value = "personal_info")
 public class PersonalInfoPo {
     /**
      * 用户号
@@ -133,4 +135,23 @@ public class PersonalInfoPo {
     @TableField(value = "CET4_GRADE_INFO")
     private  String cet4GradeInfo;
 
+    public PersonalInfoPo(PersonalInfoBo personalInfoBo){
+        this.name = personalInfoBo.getName();
+        this.writtenSchool = personalInfoBo.getWrittenSchool();
+        this.schoolCampus = personalInfoBo.getSchoolCampus();
+        this.isLendExam = personalInfoBo.getIsLendExam();
+        this.schoolRegister = personalInfoBo.getSchoolRegister();
+        this.gender = personalInfoBo.getGender();
+        this.papersType = personalInfoBo.getPapersType();
+        this.educationBack = personalInfoBo.getEducationBack();
+        this.schoolingLength = personalInfoBo.getSchoolingLength();
+        this.enrollmentYear = personalInfoBo.getEnrollmentYear();
+        this.grade = personalInfoBo.getGrade();
+        this.department = personalInfoBo.getDepartment();
+        this.profession = personalInfoBo.getProfession();
+        this.className = personalInfoBo.getClassName();
+        this.studentNumber = personalInfoBo.getStudentNumber();
+        this.remark = personalInfoBo.getRemark();
+        this.cet4GradeInfo = personalInfoBo.getCet4GradeInfo();
+    }
 }

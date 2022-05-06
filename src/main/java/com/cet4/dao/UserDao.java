@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 
 @Mapper
-public interface UserMapper extends BaseMapper<UserPo> {
+public interface UserDao extends BaseMapper<UserPo> {
     @Select("select * from user where username=#{username} and password=#{password}")
     UserPo login(@Param("username") String username, @Param("password") String password);
 }

@@ -19,7 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class UserController {
     @Autowired
-    UserServiceImpl userServiceImpl;
+    private UserServiceImpl userServiceImpl;
+
     @GetMapping("all")
     public ResponseBean findAll(){
         return new ResponseBean(200,userServiceImpl.findAll(),"查询成功!");
