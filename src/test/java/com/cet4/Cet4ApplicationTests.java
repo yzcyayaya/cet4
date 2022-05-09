@@ -10,6 +10,7 @@ import com.cet4.pojo.bo.PersonalInfoBo;
 import com.cet4.pojo.po.PersonalInfoPo;
 import com.cet4.service.PersonalInfoService;
 import com.cet4.utils.ExcelPersonalInfoListener;
+import com.cet4.utils.MD5Util;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -44,12 +46,20 @@ class Cet4ApplicationTests {
             for (PersonalInfoBo personalInfoBo : dataList) {
                 log.info("读取到一条数据{}", JSONUtil.toJsonStr(personalInfoBo));
                 PersonalInfoPo personalInfoPo = new PersonalInfoPo(personalInfoBo);
+                personalInfoPo.setCreatedTime(new Date());
                 personalInfoPo.setUserId(UUID.fastUUID().toString());
                 list.add(personalInfoPo);
             }
         })).sheet().doRead();
 //        EasyExcel.read(fileName, PersonalInfoBo.class,new ExcelPersonalInfoListener()).sheet().doRead();
-//        personalInfoDao.save(list);
-        personalInfoService.saveBatch(list);
+        personalInfoDao.save(list);
+
+//        personalInfoService.saveBatch(list);
+    }
+    @Test
+    public void test(){
+        MD5Util md5Util = new MD5Util();
+        String encode = md5Util.encode("123456");
+        System.out.println(encode);
     }
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cet4.migration.AutoMigration">
+
+    <update id="dropTableName">
+        DROP TABLE IF EXISTS ${tableName};
+    </update>
+
+    <update id="createUserTable">
+        CREATE TABLE user(
+                             USER_ID VARCHAR(50) NOT NULL   COMMENT '用户ID' ,
+                             REVISION VARCHAR(32)    COMMENT '乐观锁' ,
+                             CREATED_TIME DATETIME    COMMENT '创建时间' ,
+                             UPDATED_BY VARCHAR(32)    COMMENT '更新人' ,
+                             UPDATED_TIME DATETIME    COMMENT '更新时间' ,
+                             EMAIL VARCHAR(255)    COMMENT '邮箱' ,
+                             PHONE_NUMBER VARCHAR(20) NOT NULL   COMMENT '手机号码' ,
+                             USER_NAME VARCHAR(255)    COMMENT '用户名' ,
+                             PASSWORD VARCHAR(255)    COMMENT '密码;必须加密存储进来' ,
+                             RECENTLY_LANDED VARCHAR(255)    COMMENT '最近登录时间',
+                            PRIMARY KEY (USER_ID)
+        )  COMMENT = '';
+    </update>
+
+    <update id="createPersonalInfoTable">
+        CREATE TABLE personal_info(
+                                      USER_ID VARCHAR(50)    COMMENT '用户号' ,
+                                      REVISION VARCHAR(32)    COMMENT '乐观锁' ,
+                                      CREATED_BY VARCHAR(32)    COMMENT '创建人' ,
+                                      CREATED_TIME DATETIME    COMMENT '创建时间' ,
+                                      UPDATED_BY VARCHAR(32)    COMMENT '更新人' ,
+                                      UPDATED_TIME DATETIME    COMMENT '更新时间' ,
+                                      NAME VARCHAR(255)    COMMENT '姓名' ,
+                                      WRITTEN_SCHOOL VARCHAR(255)    COMMENT '笔试学校' ,
+                                      SCHOOL_CAMPUS VARCHAR(255)    COMMENT '笔试学校校区' ,
+                                      IS_LEND_EXAM VARCHAR(1)    COMMENT '是否借考;1是0否' ,
+                                      SCHOOL_REGISTER VARCHAR(255)    COMMENT '学籍所在校' ,
+                                      GENDER VARCHAR(255)    COMMENT '性别' ,
+                                      PAPERS_TYPE VARCHAR(255)    COMMENT '证件类型' ,
+                                      EDUCATION_BACK VARCHAR(255)    COMMENT '学历' ,
+                                      SCHOOLING_LENGTH VARCHAR(255)    COMMENT '学制' ,
+                                      ENROLLMENT_YEAR VARCHAR(255)    COMMENT '入学年份' ,
+                                      GRADE VARCHAR(255)    COMMENT '年级' ,
+                                      DEPARTMENT VARCHAR(255)    COMMENT '院系' ,
+                                      PROFESSION VARCHAR(255)    COMMENT '专业' ,
+                                      CLASS_NAME VARCHAR(255)    COMMENT '班级' ,
+                                      STUDENT_NUMBER VARCHAR(255)    COMMENT '学号' ,
+                                      REMARK VARCHAR(255)    COMMENT '备注' ,
+                                      CET4_GRADE_INFO VARCHAR(255)    COMMENT '四级成绩单/信息',
+                                      constraint user_personal_fk foreign key(USER_ID) references `user`(USER_ID)
+        )  COMMENT = '';
+
+    </update>
+    <update id="createRoleTable">
+        CREATE TABLE role(
+                             ROLE_ID int(50) NOT NULL   COMMENT '用户id' ,
+                             ROLE_NAME VARCHAR(255)    COMMENT '角色名' ,
+                             PRIMARY KEY (ROLE_ID)
+        )  COMMENT = '';
+    </update>
+    <update id="createUserRoleTable">
+        CREATE TABLE user_role(
+            USER_ID VARCHAR(50)    COMMENT '用户id' ,
+            ROLE_ID int(50)    COMMENT '角色id',
+            constraint user_role_fk1 foreign  key(USER_ID)  references `user`(USER_ID),
+            constraint role_user_fk2 foreign  key(ROLE_ID)  references `role`(ROLE_ID)
+        )  COMMENT = '';
+    </update>
+    <insert id="insertAdministration">
+        insert into `user`(USER_ID,REVISION,CREATED_TIME,UPDATED_BY,UPDATED_TIME,EMAIL,PHONE_NUMBER,USER_NAME,PASSWORD,RECENTLY_LANDED)
+        VALUES('1001',null,null,null,null,'ylzlcl@163.com','17687921824','zhangsan','e075a6f94c22e66273b3d45d82748498',null);
+    </insert>
+    <insert id="insertRole">
+        insert into `role`(ROLE_ID,ROLE_NAME)values(1,"ROLE_ADMIN"),(2,"ROLE_TEACHER"),(3,"ROLE_STUDENT");
+    </insert>
+    <insert id="insertAdminRole">
+        insert into user_role(USER_ID,ROLE_ID)values('1001',1),('1001',2),('1001',3);
+    </insert>
+
+
+</mapper>

@@ -3,12 +3,12 @@ package com.cet4.pojo.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.cet4.pojo.bo.UserBo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 @TableName("user")
@@ -46,6 +46,19 @@ public class UserPo {
     @TableField(value = "UPDATED_TIME")
     private Date updatedTime;
     /**
+     * 邮箱
+     */
+    @TableField(value = "EMAIL")
+    private String email;
+
+    /**
+     * 手机
+     */
+    @TableField(value = "PHONE_NUMBER")
+    private String phone;
+
+
+    /**
      * 用户名
      */
     @TableField(value = "USER_NAME")
@@ -53,17 +66,20 @@ public class UserPo {
     /**
      * 密码 !!!必须脱敏
      */
-    
     @TableField(value = "PASSWORD")
     private String password;
+
     /**
-     * 手机
+     * 最后登录时间
      */
-    @TableField(value = "PHONE_NUMBER")
-    private int phone;
-    /**
-     * 邮箱
-     */
-    @TableField(value = "EMAIL")
-    private String email;
+    @TableField("RECENTLY_LANDED")
+    private String recentlyLanded;
+
+    public UserPo(UserBo userBo){
+        this.id = userBo.getId();
+        this.username = userBo.getUsername();
+        this.password = userBo.getPassword();
+        this.phone = userBo.getPhone();
+        this.email = userBo.getEmail();
+    }
 }

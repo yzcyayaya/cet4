@@ -13,6 +13,7 @@ public class StatusCode {
     public static final int ErrorNotExistUser = 10003;
     public static final int ErrorFailEncryption = 10006;
     public static final int ErrorNotCompare = 10007;
+    public static final int ErrorDataIllegal = 10008;
 
 
     public static final int ErrorAuthCheckTokenFail = 30001; //token 错误
@@ -24,31 +25,27 @@ public class StatusCode {
     public static final int ErrorDatabase = 40001;
     public static final int ErrorCaptcha = 40002;               //验证码错误
 
-    private static HashMap<Integer, String> flagMap;
+    private static HashMap<Integer, String> flagMap = new HashMap<Integer, String>();
 
     private static void InitFlagMap() {
-        flagMap = new HashMap<Integer, String>() {
-            {
-                flagMap.put(SUCCESS, "ok");
-                flagMap.put(ERROR, "fail");
-                flagMap.put(InvalidParams, "请求参数错误");
-                flagMap.put(ErrorFailEncryption,"加密失败");
-                //100xx
-                flagMap.put(ErrorExistUser,"用户已存在");
-                flagMap.put(ErrorNotExistUser,"用户不存在");
+        flagMap.put(SUCCESS, "ok");
+        flagMap.put(ERROR, "fail");
+        flagMap.put(InvalidParams, "请求参数错误");
+        //100xx
+        flagMap.put(ErrorExistUser, "用户已存在");
+        flagMap.put(ErrorNotExistUser, "用户不存在");
+        flagMap.put(ErrorFailEncryption, "加密失败");
+        flagMap.put(ErrorDataIllegal, "数据非法");
 
-                flagMap.put(ErrorNotCompare, "不匹配");
-                //300xx
-                flagMap.put(ErrorAuthCheckTokenFail, "鉴权失败");
-                flagMap.put(ErrorAuthCheckTokenTimeout, "登录已超时");
-                flagMap.put(ErrorAuthToken, "Token生成失败");
-                flagMap.put(ErrorAuth, "Token错误");
+        //300xx
+        flagMap.put(ErrorAuthCheckTokenFail, "鉴权失败");
+        flagMap.put(ErrorAuthCheckTokenTimeout, "登录已超时");
+        flagMap.put(ErrorAuthToken, "Token生成失败");
+        flagMap.put(ErrorAuth, "Token错误");
 
-                //400xx
-                flagMap.put(ErrorDatabase, "数据库操作出错,请重试");
-                flagMap.put(ErrorCaptcha, "验证码错误");
-            }
-        };
+        //400xx
+        flagMap.put(ErrorDatabase, "数据库操作出错,请重试");
+        flagMap.put(ErrorCaptcha, "验证码错误");
     }
 
     public static String getMsg(int code) {

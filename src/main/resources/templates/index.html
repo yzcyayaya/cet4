@@ -103,7 +103,12 @@
             <img th:src="@{images/login_title.jpg}" class="d-block w-100" draggable="false"/>
         </div>
         <div class="card-body">
-            <form id="loginForm" method="post">
+            <form id="loginForm" th:action="@{/userLogin}" method="post">
+                <div class="layui-row">
+                    <div class="form-group text-left layui-col-md-offset2">
+                        <label style="color: red" th:if="${param.error}">账号或密码错误,请重新输入</label>
+                    </div>
+                </div>
                 <div class="layui-row">
                     <div class="form-group text-left layui-col-md-offset2">
                         <!--一个输入组-->
@@ -145,7 +150,7 @@
                 </div>
                 <div>&nbsp;</div>
                 <div class="form-group layui-row">
-                    <button type="button" onclick="commit()" onmouseenter="enterColor(this)"
+                    <button type="submit" onclick="commit()" onmouseenter="enterColor(this)"
                             onmouseleave="leaveColor(this)" lay-filter="formDemo"
                             style="font-size:1vw;color: white;background-color: #40ca70;"
                             class="layui-btn layui-btn-primary layui-btn-radius layui-col-md-offset6">登&nbsp;&nbsp;录
@@ -192,23 +197,24 @@
             return;
         }
         ;
-        //接口
-        $.post("/login", $("#loginForm").serialize(), (resp) => {
-            if (resp.code === 200) {
-                //弹出一个成功提示层
-                layer.msg(resp.msg, {
-                    icon: 1,
-                    time: 1000,
-                });
-            } else {
-                //弹出一个成功提示层
-                layer.msg(resp.msg, {
-                    icon: 2,
-                    time: 1000,
-                });
-            }
-
-        })
+        // //接口
+        // $.post("/user/login", $("#loginForm").serialize(), (resp) => {
+        //     if (resp.code === 200) {
+        //         //弹出一个成功提示层
+        //         layer.msg(resp.msg, {
+        //             icon: 1,
+        //             time: 1000,
+        //         });
+        //         // history.forward("./main.html")
+        //     } else {
+        //         //弹出一个错误提示层
+        //         layer.msg(resp.msg, {
+        //             icon: 2,
+        //             time: 1000,
+        //         });
+        //     }
+        //
+        // })
     };
 
 </script>
