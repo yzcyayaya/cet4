@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cet4.dao.UserDao">
+    <!--    <select id="login" resultType="com.cet4.pojo.po.UserPo" parameterType="String">-->
+    <!--        select * from `user` where USER_NAME=#{username} and PASSWORD=#{password}-->
+    <!--    </select>-->
+    <select id="login" resultType="com.cet4.pojo.po.UserPo">
+        select USER_ID      id,
+               REVISION     revision,
+               CREATED_TIME createdTime,
+               UPDATED_BY   updatedBy,
+               UPDATED_TIME updatedTime,
+               EMAIL        email,
+               PHONE_NUMBER phone,
+               USER_NAME    username,
+               PASSWORD     password
+        from `user`
+        where
+        <if test="flag != null and flag='email'.toString()">
+            EMAIL = #{username}
+        </if>
+        <if test="flag != null and flag='phone'.toString()">
+            PHONE_NUMBER = #{username}
+        </if>
+          and PASSWORD = #{password}
+    </select>
+    <insert id="save">
+        insert into `user`(USER_ID,REVISION,CREATED_TIME,UPDATED_BY,UPDATED_TIME,EMAIL,PHONE_NUMBER,USER_NAME,PASSWORD)
+        values
+        <foreach collection="list" item="userPo" separator=",">
+            (
+            #{userPo.id},
+            #{userPo.revision},
+            #{userPo.createdTime},
+            #{userPo.updatedBy},
+            #{userPo.updatedTime},
+            #{userPo.email},
+            #{userPo.phone},
+            #{userPo.username},
+            #{userPo.password}
+            )
+        </foreach>
+    </insert>
+    <select id="findUserByPhone" resultType="com.cet4.pojo.po.UserPo">
+        select USER_ID      id,
+               REVISION     revision,
+               CREATED_TIME createdTime,
+               UPDATED_BY   updatedBy,
+               UPDATED_TIME updatedTime,
+               EMAIL        email,
+               PHONE_NUMBER phone,
+               USER_NAME    username,
+               PASSWORD     password
+        from `user`
+        where PHONE_NUMBER = #{phone}
+    </select>
+    <select id="findUserByEmail" resultType="com.cet4.pojo.po.UserPo">
+        select USER_ID      id,
+               REVISION     revision,
+               CREATED_TIME createdTime,
+               UPDATED_BY   updatedBy,
+               UPDATED_TIME updatedTime,
+               EMAIL        email,
+               PHONE_NUMBER phone,
+               USER_NAME    username,
+               PASSWORD     password
+        from `user`
+        where EMAIL = #{email}
+    </select>
+</mapper>
