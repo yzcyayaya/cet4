@@ -18,8 +18,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao,UserPo> implements User
     UserDao userDao;
 
     @Override
-    public List<UserVo> findAll(){
-        List<UserPo> userPos = userDao.selectList(null);
+    public List<UserVo> findAll(Integer flag,String vague){
+        List<UserPo> userPos = userDao.findAll(flag,vague);
         List<UserVo> userVos = new ArrayList<>();
         for (UserPo userPo : userPos) {
             userVos.add(new UserVo(userPo));
@@ -38,5 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao,UserPo> implements User
             userPo = userDao.login(username, password,"email");
         }
         return new UserVo(userPo);
+    }
+
+    @Override
+    public UserPo findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
     }
 }

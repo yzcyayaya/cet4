@@ -6,6 +6,73 @@
     <!--    <select id="login" resultType="com.cet4.pojo.po.UserPo" parameterType="String">-->
     <!--        select * from `user` where USER_NAME=#{username} and PASSWORD=#{password}-->
     <!--    </select>-->
+
+    <select id="findAll" resultType="com.cet4.pojo.po.UserPo" parameterType="int">
+        <if test="flag == null">
+            select USER_ID as id,
+            REVISION as revision,
+            CREATED_TIME  as createdTime,
+            UPDATED_BY as updatedBy,
+            UPDATED_TIME  as updatedTime,
+            EMAIL as email,
+            PHONE_NUMBER  as phone,
+            USER_NAME  as username,
+            PASSWORD  as password,
+            RECENTLY_LANDED  as recentlyLanded from `user`;
+        </if>
+        <!--id模糊匹配-->
+        <if test="flag == 0">
+            select USER_ID as id,
+            REVISION as revision,
+            CREATED_TIME  as createdTime,
+            UPDATED_BY as updatedBy,
+            UPDATED_TIME  as updatedTime,
+            EMAIL as email,
+            PHONE_NUMBER  as phone,
+            USER_NAME  as username,
+            PASSWORD  as password,
+            RECENTLY_LANDED  as recentlyLanded from `user` where USER_ID like concat('',#{vague},'%');
+        </if>
+        <!--邮箱模糊匹配-->
+        <if test="flag == 1">
+            select USER_ID as id,
+            REVISION as revision,
+            CREATED_TIME  as createdTime,
+            UPDATED_BY as updatedBy,
+            UPDATED_TIME  as updatedTime,
+            EMAIL as email,
+            PHONE_NUMBER  as phone,
+            USER_NAME  as username,
+            PASSWORD  as password,
+            RECENTLY_LANDED  as recentlyLanded from `user` where EMAIL like concat('',#{vague},'%');
+        </if>
+        <!--手机模糊匹配-->
+        <if test="flag == 2">
+            select USER_ID as id,
+            REVISION as revision,
+            CREATED_TIME  as createdTime,
+            UPDATED_BY as updatedBy,
+            UPDATED_TIME  as updatedTime,
+            EMAIL as email,
+            PHONE_NUMBER  as phone,
+            USER_NAME  as username,
+            PASSWORD  as password,
+            RECENTLY_LANDED  as recentlyLanded from `user` where PHONE_NUMBER like concat('',#{vague},'%');
+        </if>
+        <!--用户名字模糊匹配-->
+        <if test="flag == 3">
+            select USER_ID as id,
+            REVISION as revision,
+            CREATED_TIME  as createdTime,
+            UPDATED_BY as updatedBy,
+            UPDATED_TIME  as updatedTime,
+            EMAIL as email,
+            PHONE_NUMBER  as phone,
+            USER_NAME  as username,
+            PASSWORD  as password,
+            RECENTLY_LANDED  as recentlyLanded from `user` where USER_NAME like concat('',#{vague},'%');
+        </if>
+    </select>
     <select id="login" resultType="com.cet4.pojo.po.UserPo">
         select USER_ID      id,
                REVISION     revision,
@@ -69,4 +136,10 @@
         from `user`
         where EMAIL = #{email}
     </select>
+    <update id="updateRecentlyLandedByEmail">
+        update `user` set RECENTLY_LANDED=#{recentlyLanded} where EMAIL=#{email}
+    </update>
+    <update id="updateRecentlyLandedByPhone">
+        update `user` set RECENTLY_LANDED=#{recentlyLanded} where PHONE_NUMBER=#{phone}
+    </update>
 </mapper>

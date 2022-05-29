@@ -1,6 +1,7 @@
 package com.cet4;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.listener.PageReadListener;
@@ -57,9 +58,18 @@ class Cet4ApplicationTests {
 //        personalInfoService.saveBatch(list);
     }
     @Test
-    public void test(){
+    public void encode(){
         MD5Util md5Util = new MD5Util();
         String encode = md5Util.encode("123456");
-        System.out.println(encode);
+
+        String password = "ylzlcl@163.com".substring(0,4) + "17687921824".substring(7,11);
+        System.out.println(password);
+        System.out.println(new MD5Util().encode(password));
+    }
+
+    @Test
+    public void random(){
+        String s = RandomUtil.randomNumbers(4);
+        System.out.println(s);
     }
 }

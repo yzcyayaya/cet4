@@ -1,0 +1,362 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员界面</title>
+</head>
+<style>
+    .content span:nth-child(2n+1) {
+        text-align: right;
+    }
+</style>
+<link th:href="@{css/bootstrap.css}" rel="stylesheet"/>
+<link th:href="@{js/css/layui.css}" rel="stylesheet">
+<script type="text/javascript" th:src="@{js/jquery-3.6.0.js}"></script>
+<script type="text/javascript" th:src="@{js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{js/layui.js}"></script>
+<body>
+<div>
+    <div class="layui-col-md5 layui-col-md-offset4">
+        <h3>通过上传文件来新增用户</h3>
+        <button type="button" class="layui-btn" id="test1">
+            <i class="layui-icon">&#xe67c;</i>上传文件
+        </button>
+        <div style="display: block;">
+            <h3 style="display: block;">下载文件模板</h3>
+            <a th:href="@{/info/getDemoExcel}" class="layui-btn">
+                <i class="layui-icon">&#xe601;</i>下载文件
+            </a>
+        </div>
+
+    </div>
+    <div class="layui-col-md5 layui-col-md-offset2">
+
+    </div>
+    <hr/>
+
+    <table class="table">
+        <tr>
+            <td style="display: inline-block" class="layui-col-md5 layui-col-md-offset4">
+                <input placeholder="请输入模糊查询" id="vague" class="layui-input-block"/>
+                <div style="display: inline-block" class="radio">
+                    <label class="radio-inline"><input type="radio" name="flag" value="0">用户id</label>
+                    <label class="radio-inline"><input type="radio" name="flag" value="1">邮箱</label>
+                    <label class="radio-inline"><input type="radio" name="flag" value="2">手机号码</label>
+                    <label class="radio-inline"><input type="radio" checked name="flag" value="3">用户名字</label>
+                </div>
+                <button type="sumbit" class="btn btn-info" id="search" onclick="onClickSearch()">查询</button>
+            </td>
+        </tr>
+        <tr>
+            <table class="table table-bordered">
+                <tr class="success">
+                    <th>用户id</th>
+                    <th>邮箱</th>
+                    <th>手机号码</th>
+                    <th>用户名字</th>
+                    <th>最近登录时间</th>
+                    <th>操作</th>
+                </tr>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </tr>
+
+    </table>
+
+</div>
+
+
+</body>
+<script type="text/javascript">
+    //绘制表格
+    function getTableHtml(item) {
+        let html = "<tr>" +
+            "<td>" + item.id + "</td>" +
+            "<td>" + item.email + "</td>" +
+            "<td>" + item.phone + "</td>" +
+            "<td>" + item.username + "</td>" +
+            "<td>" + item.recentlyLanded + "</td>" +
+            "<td>" +
+            "<button class='layui-btn layui-btn-sm edit'>编辑</button>" +
+            "<button class='layui-btn layui-btn-sm layui-btn-danger delete'>删除</button>" +
+            "<button class='layui-btn layui-btn-sm layui-btn-normal describe'>详情</button>" +
+            "</td>" +
+            "</tr>";
+        return html;
+    }
+
+    // 查看详细信息
+    function getDescribe(data) {
+        let isLendExam = '';
+        if (data.isLendExam == 1) {
+            isLendExam = '是借考';
+        } else {
+            isLendExam = '不是借考';
+        }
+        layer.open({
+            title: "<h3>" + data.name + '的详情信息' + "</h3>"
+            , content:
+                "<div class='content' style='display: grid;\n" +
+                "  grid-template-columns: 200px 400px'>" +
+                "<span>用户号：</span><span>" + data.userId + "</span>" +
+                "<span>乐观锁：</span><span>" + data.revision + "</span>" +
+                "<span>创建人：</span><span>" + data.createdBy + "</span>" +
+                "<span>创建时间：</span><span>" + data.createdTime + "</span>" +
+                "<span>更新人：</span><span>" + data.updatedBy + "</span>" +
+                "<span>更新时间：</span><span>" + data.updatedTime + "</span>" +
+                "<span>姓名：</span><span>" + data.name + "</span>" +
+                "<span>笔试学校：</span><span>" + data.writtenSchool + "</span>" +
+                "<span>笔试学校校区：</span><span>" + data.schoolCampus + "</span>" +
+                "<span>是否借考：</span><span>" + isLendExam + "</span>" +
+                "<span>学籍所在校：</span><span>" + data.schoolRegister + "</span>" +
+                "<span>性别：</span><span>" + data.gender + "</span>" +
+                "<span>证件类型：</span><span>" + data.papersType + "</span>" +
+                "<span>学历：</span><span>" + data.educationBack + "</span>" +
+                "<span>学制：</span><span>" + data.schoolingLength + "</span>" +
+                "<span>入学年份：</span><span>" + data.enrollmentYear + "</span>" +
+                "<span>年级：</span><span>" + data.grade + "</span>" +
+                "<span>院系：</span><span>" + data.department + "</span>" +
+                "<span>专业：</span><span>" + data.profession + "</span>" +
+                "<span>班级：</span><span>" + data.className + "</span>" +
+                "<span>学号：</span><span>" + data.studentNumber + "</span>" +
+                "<span>备注：</span><span>" + data.remark + "</span>" +
+                "<span>四级成绩单/信息：</span><span>" + data.cet4GradeInfo + "<span>" +
+                "</div>"
+        });
+
+    }
+
+    //编辑数据
+    function editTableRow(rowData) {
+        layer.open({
+            title: "<h3>编辑" + rowData.username + '的用户数据' + "</h3>"
+            , content:
+                "<div className='content' style='display: grid;" +
+                "  grid-template-columns: 200px 400px'>" +
+                "<label>id: </label><input class='layui-input' type='text' id='user_id' disabled />" +
+                "<label>邮箱: </label><input class='layui-input'  type='text' id='email' />" +
+                "<label>手机号码: </label><input  class='layui-input' type='text' id='phone'/>" +
+                "<label>名字: </label><input class='layui-input'  type='text' id='user_name'/>" +
+                "<label>最近登录时间: </label><input class='layui-input' type='text' id='recentlyLanded' disabled/>"+
+                "<label>密码(选填): </label><input class='layui-input' type='text' id='password' placeholder='可修改该用户密码，但请慎重！'/>"+
+                "</div>",
+            yes:function (index, layero){
+                //更新值
+                rowData.email = $('#email').val();
+                rowData.phone = $('#phone').val();
+                rowData.username = $('#user_name').val();
+                let password = $('#password').val()
+                console.log(password)
+                //修改密码操作
+                if(password != null && password !='' ){
+                    $.ajax({
+                        type: 'put',
+                        url:'/user',
+                        data: {
+                            id: rowData.id,
+                            email: rowData.email,
+                            phone: rowData.phone,
+                            username: rowData.username,
+                            recentlyLanded: rowData.recentlyLanded,
+                            password: password
+                        },
+                        success: function (res){
+                            console.log(res);
+                        }
+                    })
+                }else {
+                    $.ajax({
+                        type: 'put',
+                        url:'/user',
+                        data: rowData,
+                        success: function (res){
+                            console.log(res);
+                        }
+                    })
+                }
+                layer.close(index); //手工关闭对话框
+            }
+        })
+        //渲染数据回显
+        $('#user_id').val(rowData.id);
+        $('#email').val(rowData.email);
+        $('#phone').val(rowData.phone);
+        $('#user_name').val(rowData.username);
+        $('#recentlyLanded').val(rowData.recentlyLanded);
+    }
+
+    //获取一行表格数据
+    function getTableRowData(trData) {
+        //切割成数组
+        let split = trData.split("<td>");
+        //删除第一个空串 应该是tr
+        split.splice(0, 1);
+        //删除最后一个 button的元素
+        split.pop();
+        //便利
+        split.forEach(function (item, i) {
+            let index = item.indexOf("</td>");
+            // console.log(index);
+            split[i] = item.slice(0, index)
+            // console.log(split[i])
+        })
+        //返回一行数据
+        return {
+            id: split[0],
+            email: split[1],
+            phone: split[2],
+            username: split[3],
+            recentlyLanded: split[4]
+        }
+    }
+
+    // 绑定点击事件
+    function bindClick() {
+        //编辑
+        $(".edit").click(function () {
+            let trData = $(this).parent().parent().html();
+            //获取一行数据
+            let rowData = getTableRowData(trData);
+            //修改数据
+            editTableRow(rowData)
+        });
+        //删除
+        $(".delete").click(function () {
+            let trData = $(this).parent().parent().html();
+            //获取一行数据
+            let rowData = getTableRowData(trData);
+            $.ajax({
+                type:'delete',
+                url: '/user',
+                data:{
+                    ids: rowData.id
+                },
+                success: function (res){
+                    if (res.code == "200") {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 2000,
+                        });
+                        //删除做一次查询
+                        getUsers('', '');
+                    }else {
+                        layer.msg(res.msg, {
+                            icon: 3,
+                            time: 2000,
+                        });
+                    }
+                },
+                error:function (res){
+                    layer.msg(res.msg, {
+                        icon: 2,
+                        time: 2000,
+                    });
+                }
+            })
+        });
+        //详细信息
+        $(".describe").click(function () {
+            let trData = $(this).parent().parent().html();
+            let s = trData.indexOf("</td>")
+            //获取id
+            let id = trData.slice(4, s);
+            $.ajax({
+                type: "get",
+                url: "/info/personalInfo/" + id,
+                success: function (res) {
+                    //正常请求回调
+                    if (res.code == "30004") {
+                        layer.msg(res.msg, {
+                            icon: 3,
+                            time: 2000,
+                        });
+                    } else if (res.code == "200") {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 2000,
+                        });
+                        getDescribe(res.data)
+                    }
+
+                },
+                error: function (res) {
+                    //请求异常回调
+                    layer.msg(res.msg, {
+                        icon: 2,
+                        time: 2000,
+                    });
+                }
+            })
+        })
+    };
+
+    //查询操作
+    function getUsers(flag, vague) {
+        $.get("/users", "flag=" + flag + "&vague=" + vague, function (resp) {
+            console.log(resp);
+            let html = '';
+            resp.data.forEach(function (item) {
+                html += getTableHtml(item)
+            })
+            $('#tbody').html(html);
+            //渲染绑定事件
+            // resp.data.forEach(bindClick);
+            bindClick();
+        });
+    };
+    //上来就做查询
+    window.onload = function () {
+        $.get("/users", function (resp) {
+            console.log(resp);
+            let html = '';
+            resp.data.forEach(function (item, index) {
+                // html+="<tr><td>"+item.id+"</td><td>"+item.email+"</td><td>"+item.phone+"</td><td>"+item.username+"</td><td>"+item.recentlyLanded+"</td><tr>";
+                html += getTableHtml(item, index)
+            })
+            $('#tbody').html(html);
+            //渲染绑定事件
+            // resp.data.forEach(bindClick);
+            bindClick();
+        });
+    };
+
+    layui.use('upload', function () {
+        let upload = layui.upload;
+        //执行实例
+        let uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            , url: '/info/personalInfo' //上传接口
+            , done: function (res) {
+                //上传完毕回调
+                layer.msg(res.msg, {
+                    icon: 1,
+                    time: 2000,
+                });
+                getUsers('', '');
+            }
+            , error: function (res) {
+                //请求异常回调
+                layer.msg(res.msg, {
+                    icon: 2,
+                    time: 2000,
+                });
+            }, accept: 'file'
+        });
+    });
+
+
+    //模糊匹配选中谁
+    function onClickSearch() {
+        let flag = $("input[name='flag']:checked").val();
+        let vague = $("#vague").val();
+        console.log(flag)
+        console.log(vague)
+        getUsers(flag, vague);
+    }
+
+
+</script>
+
+
+</html>

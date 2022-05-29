@@ -18,7 +18,7 @@ public class PersonalInfoPo {
     /**
      * 用户号
      */
-    @TableField(value = "USER_ID")
+    @TableId(value = "USER_ID")
     private  String userId;
     /**
      * 乐观锁

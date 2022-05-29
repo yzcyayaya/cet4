@@ -7,6 +7,7 @@ spring:
     url: "jdbc:mysql://127.0.0.1:3310/cet4?userSSL=false&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT"
     username: root
     password: '000000'
+  #模板引擎
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -17,6 +18,12 @@ spring:
     check-template-location: true
     servlet:
       content-type: text/html
+  #邮件
+  mail:
+    username: ylzlcl@163.com
+    password: KJKSBZTLIIQYMIXC
+    host: smtp.163.com
+    default-encoding: UTF-8
 # trace < debug < info < warn < error < fatal
 logging:
   level:

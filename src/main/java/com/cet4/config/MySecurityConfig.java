@@ -1,7 +1,6 @@
 package com.cet4.config;
 
 
-import com.cet4.service.impl.CustomUserServiceImpl;
 import com.cet4.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -65,10 +64,10 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/index?error=true")
                 .permitAll()
                 .and().authorizeRequests().antMatchers("/","/userLogin").permitAll() //放行
-                .antMatchers("/users","/user").hasRole("ADMIN")
+                .antMatchers("/users","/user","/administrator").hasRole("ADMIN")
                 .antMatchers("/info/personalInfo").hasAnyRole("ADMIN","TEACHER")
                 .antMatchers("/main").hasAnyRole("ADMIN","TEACHER","STUDENT")
-                .and().csrf().disable();
+                .and().csrf().disable().logout().logoutUrl("/logout");
         http.exceptionHandling().accessDeniedPage("/unauth")     //修改403默认界面
             .and().rememberMe().rememberMeParameter("remember-me"); //记住我
     }
