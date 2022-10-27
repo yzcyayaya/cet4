@@ -21,7 +21,7 @@ spring:
   #邮件
   mail:
     username: ylzlcl@163.com
-    password: KJKSBZTLIIQYMIXC
+    password: {{you password}}
     host: smtp.163.com
     default-encoding: UTF-8
 # trace < debug < info < warn < error < fatal
