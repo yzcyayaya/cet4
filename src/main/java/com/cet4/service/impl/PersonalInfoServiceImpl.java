@@ -14,6 +14,7 @@ import com.cet4.pojo.po.PersonalInfoPo;
 import com.cet4.pojo.po.UserPo;
 import com.cet4.service.PersonalInfoService;
 import com.cet4.utils.MD5Util;
+import com.cet4.utils.RegularUtil;
 import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,17 +56,21 @@ public class PersonalInfoServiceImpl extends ServiceImpl<PersonalInfoDao, Person
                 userPo.setPhone(personalInfoBo.getPhone());
                 userPo.setCreatedTime(new Date());
                 userPo.setUsername(personalInfoBo.getName());
-                userPo.setEmail(personalInfoBo.getEmail());
-                //初始化密码为邮箱前四位数和手机号后四位
-                String password = new MD5Util().encode(personalInfoBo.getEmail().substring(0, 4) + personalInfoBo.getPhone().substring(7, 11));
-                userPo.setPassword(password);
-                userPoList.add(userPo);
-                //再添加用户个人信息
-                PersonalInfoPo personalInfoPo = new PersonalInfoPo(personalInfoBo);
-                personalInfoPo.setCreatedTime(userPo.getCreatedTime());
-                personalInfoPo.setUserId(userPo.getId());
-                personalList.add(personalInfoPo);
-
+                //正则
+                if(RegularUtil.regularEmail(personalInfoBo.getEmail()) && RegularUtil.regularPhone(personalInfoBo.getPhone()) ){
+                    userPo.setEmail(personalInfoBo.getEmail());
+                    //初始化密码为邮箱前四位数和手机号后四位
+                    String password = new MD5Util().encode(personalInfoBo.getEmail().substring(0, 4) + personalInfoBo.getPhone().substring(7, 11));
+                    userPo.setPassword(password);
+                    userPoList.add(userPo);
+                    //再添加用户个人信息
+                    PersonalInfoPo personalInfoPo = new PersonalInfoPo(personalInfoBo);
+                    personalInfoPo.setCreatedTime(userPo.getCreatedTime());
+                    personalInfoPo.setUserId(userPo.getId());
+                    personalList.add(personalInfoPo);
+                }else {
+                    return;
+                }
             }
         })).sheet().doRead();
         //保存用户基础信息

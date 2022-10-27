@@ -40,22 +40,6 @@ class Cet4ApplicationTests {
 
     @Test
     public void simpleRead() {
-        String fileName = "/home/m2/Documents/class_task/javaee_task/excel/test.xls";
-        List<PersonalInfoPo> list = new ArrayList<>();
-        EasyExcel.read(fileName, PersonalInfoBo.class,new PageReadListener<PersonalInfoBo>(dataList -> {
-            System.out.println(dataList.size());
-            for (PersonalInfoBo personalInfoBo : dataList) {
-                log.info("读取到一条数据{}", JSONUtil.toJsonStr(personalInfoBo));
-                PersonalInfoPo personalInfoPo = new PersonalInfoPo(personalInfoBo);
-                personalInfoPo.setCreatedTime(new Date());
-                personalInfoPo.setUserId(UUID.fastUUID().toString());
-                list.add(personalInfoPo);
-            }
-        })).sheet().doRead();
-//        EasyExcel.read(fileName, PersonalInfoBo.class,new ExcelPersonalInfoListener()).sheet().doRead();
-        personalInfoDao.save(list);
-
-//        personalInfoService.saveBatch(list);
     }
     @Test
     public void encode(){
